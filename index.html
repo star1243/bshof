@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beat Saber Hall of Fame</title>
+
+
+
+<style>
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+
+
+#introOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#introText {
+  color: rgb(167, 187, 255);
+  font-size: 6vw;
+  font-weight: bold;
+  text-align: center;
+  opacity: 0;
+  animation: fadeCycle 6s ease-in-out forwards;
+}
+
+#otherText {
+  color: rgb(255, 255, 255);
+  font-size: 4vw;
+  font-weight: italic;
+  text-align: center;
+  opacity: 0;
+  animation: fadeCycle 6s ease-in-out forwards;
+}
+
+@keyframes fadeCycle {
+  0% { opacity: 0; transform: scale(0.1); }
+  20% { opacity: 1; transform: scale(0.3); }
+  80% { opacity: 1; transform: scale(0.3);}
+  100% { opacity: 0; transform: scale(0.3);}
+}
+</style>
+
+<div id="introOverlay">
+  <div id="introText">Welcome to the Beat Saber Hall Of Fame.</div>
+  <div id="otherText">Click anywhere to play background music.</div>
+</div>
+
+<script>
+setTimeout(() => {
+  const overlay = document.getElementById('introOverlay');
+  overlay.style.transition = 'opacity 0.5s ease';
+  overlay.style.opacity = '0';
+  setTimeout(() => overlay.remove(), 500);
+}, 4000);
+</script>
+
+
+  <style>
+
+    :root {
+      --bg1:#00b3ff46;
+      --bg2:#00a3235b;
+      --bg3:#a771ff65;
+      --neon1:#2a8dff;
+      --neon2:#0567e8;
+      --gold:#b9b600;
+      --glass: rgba(255,255,255,0.08);
+    }
+
+    * { box-sizing:border-box; }
+
+    body {
+      margin:0;
+      font-family: 'Segoe UI', sans-serif;
+      color:white;
+      background: linear-gradient(270deg, var(--bg1), var(--bg2), var(--bg3));
+      background-size: 600% 600%;
+      animation: gradientMove 12s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+/* Start of Header settings. */
+
+
+    header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:15px 30px;
+      background:rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+
+    .logo {
+      font-size:1.5rem;
+      font-weight:bold;
+      background: linear-gradient(90deg, var(--neon1), var(--neon2));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    nav a {
+      color:white;
+      text-decoration:none;
+      margin-left:20px;
+      font-size:0.95rem;
+      position:relative;
+    }
+
+    nav a::after {
+      content:"";
+      position:absolute;
+      width:0;
+      height:2px;
+      left:0;
+      bottom:-4px;
+      background: linear-gradient(90deg, var(--neon1), var(--neon2));
+      transition:0.3s;
+    }
+
+    nav a:hover::after { width:100%; }
+
+    h1 {
+      text-align:center;
+      margin:30px 0 10px;
+      font-size:2.5rem;
+    }
+
+/* End of Header settings. */
+
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 20px;
+    }
+
+/* Start of Card Video settings. */
+
+    .card {
+      width:195px;
+      height:325px;
+      border-radius:20px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      display:flex;
+      flex-direction:column;
+      padding:15px;
+      justify-content:space-between;
+      transition:0.3s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card-video {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: calc(100% - 30px);
+      height: 305px;
+      border-radius: 15px;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .card:hover .card-video {
+      opacity: 1;
+    }
+
+    .card.has-video:hover .avatar {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card.has-video:hover .name {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card.has-video:hover .score {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:has(.card-video):hover .avatar {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:has(.card-video):hover .name {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:has(.card-video):hover .score {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+/* End of Card Video settings. */
+
+
+    /* Hide placeholder cards 8-21 */
+    .card:nth-child(n+8) {
+      display: none;
+      pointer-events: none;
+    }
+
+    .card::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:20px;
+      padding:2px;
+      background: linear-gradient(45deg, var(--neon1), var(--neon2));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow:0 10px 40px rgba(0, 17, 255, 0.7);
+      width:200px;
+      height:330px;
+    }
+
+    .avatar {
+      width:100%;
+      height:170px;
+      border-radius:15px;
+      background-size:cover;
+      background-position:center;
+    }
+
+    .name {
+      font-weight:bold;
+      font-size:1.1rem;
+      margin-top:8px;
+    }
+
+    .score {
+      font-size:0.85rem;
+      opacity:0.8;
+    }
+
+    footer {
+      margin-top:40px;
+      padding:20px;
+      text-align:center;
+      background:rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      font-size:0.85rem;
+      opacity:0.8;
+    }
+
+    footer a {
+      color: var(--neon2);
+      text-decoration:none;
+    }
+
+    /* Credits Modal Styles */
+    #creditsModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.6s ease;
+    }
+
+    #creditsModal.show {
+      display: flex;
+    }
+
+    .creditsContent {
+      background: linear-gradient(135deg, rgba(30, 135, 255, 0.356), rgba(5, 103, 232, 0.2));
+      backdrop-filter: blur(120px);
+      border: 2px solid var(--neon1);
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 70vh;
+      overflow-y: hidden;
+      box-shadow: 0 40px 80px rgba(42, 141, 255, 0.3);
+      animation: slideUp 1s ease;
+    }
+
+    .creditsHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid var(--neon1);
+      padding-bottom: 15px;
+    }
+
+    .creditsHeader h2 {
+      margin: 0;
+      font-size: 2rem;
+      color: var(--neon1);
+    }
+
+    .closeBtn {
+      background: none;
+      border: none;
+      color: var(--neon1);
+      font-size: 2rem;
+      cursor: pointer;
+      transition: 0.6s;
+    }
+
+    .closeBtn:hover {
+      transform: rotate(360deg);
+      color: var(--neon2);
+    }
+
+    .creditItem {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 3px solid var(--neon2);
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .creditItem:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+    }
+
+    .creditName {
+      font-weight: bold;
+      color: var(--neon1);
+      font-size: 1.1rem;
+    }
+
+    .creditRole {
+      color: rgb(200, 200, 200);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Video Activation Popup */
+    .video-activation-popup {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(42, 141, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 15px 40px rgba(42, 141, 255, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.1);
+      animation: popupPulse 3s ease-in-out infinite;
+    }
+
+    .video-activation-popup.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .popup-text {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .popup-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    @keyframes popupPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">BS Hall Of Fame (Unofficial)</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScFin6A696pIaD8N0I-3lRIbl8W-SuZ1o16niUZbDZUlMY7xw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" >Submit yourself to BSHOF</a>
+    <a href="#" onclick="openCredits(event)">Credits</a>
+</header>
+
+<!-- Credits Modal -->
+<div id="creditsModal">
+  <div class="creditsContent">
+    <div class="creditsHeader">
+      <h2>Credits</h2>
+      <button class="closeBtn" onclick="closeCredits()">&times;</button>
+    </div>
+    <div class="creditItem">
+      <div class="creditName">adamsrealm1</div>
+      <div class="creditRole">Site Creator</div>
+    </div>
+  </div>
+</div>
+
+<h1>BS Hall Of Fame</h1>
+
+<div class="container">
+
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.postimg.cc/PJhkSs3w/268459727.jpg');"></div>
+    <div class="name">adamsrealm1</div>
+    <div class="score">Site Creator</div>
+    <div class="score">
+      <a href="https://www.beatsaver.com/profile/312077" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatSaver Profile</a>
+    </div>
+        <div class="score">
+      <a href="https://beatleader.com/u/adamsrealm1/" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatLeader Profile</a>
+    </div>
+        <div class="score">
+      <a href="https://github.com/adamsrealm1" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a>
+    </div>
+  </div>
+  <div class="card">
+    <video class="card-video">
+      <source src="videos/swifter.mp4" type="video/mp4">
+    </video>
+    <div class="avatar" style="background-image:url('https://i.imgur.com/ECf8pN6.png');"></div>
+    <div class="name">Swifter</div>
+    <div class="score">Extra Sensory 1 Creator</div>
+    <div class="score">Extra Sensory 2 Creator</div>
+    <div class="score">Vivify Creator</div>
+    <div class="score">Pro Modchart Maker</div>
+    <div class="score">Built BSIPA</div>
+    <div class="score">
+      <a href="https://beatsaver.com/profile/4284246" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatSaver Profile</a>
+    </div>
+        <div class="score">
+      <a href="https://beatleader.com/u/76561198271377161/" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatLeader Profile</a>
+    </div>
+        <div class="score">
+      <a href="https://github.com/Swifter1243" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a>
+    </div>
+        <div class="score">
+      <a href="https://swifter1243.dev" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View User's Website</a>
+    </div>
+        <div class="score">
+      <a href="https://bsaber.com/playlists/extra-sensory-ii" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">About Extra Sensory 2</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/bGTXQ8k.png');"></div>
+    <div class="name">Aeroluna</div>
+    <div class="score">NE Creator</div>
+    <div class="score">Synapse Creator</div>
+      <div class="score">
+      <a href="https://github.com/Aeroluna/Synapse#Synapse" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">About Synapse</a> </div>
+        <div class="score">
+      <a href="https://github.com/Aeroluna" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a> </div>
+        <div class="score">
+      <a href="https://aeroluna.dev/" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View User's Website</a> </div>
+    <div class="score">
+      <a href="https://beatsaver.com/profile/4284266#" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatSaver Profile</a>
+   </div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/74o9eTd.jpeg');"></div>
+    <div class="name">Ozymandias</div>
+    <div class="score">3D VFX Maker</div>
+    <div class="score">Vivify Maker</div>
+    <div class="score">Noodle Extensions Pro</div>
+      <div class="score">
+        <a href="#" style="color: var(); text-decoration:none; font-size:0.85rem;">Work in progress.</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/CdAxmd7.png');"></div>
+    <div class="name">Caeden117</div>
+    <div class="score">Creator of ChroMapper</div>
+    <div class="score"><strong>Without CM 60% of maps wouldn't be made!</strong></div>
+      <div class="score">
+      <a href="https://github.com/caeden117" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a> </div>
+        <div class="score">
+      <a href="https://caeden.dev/" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View User's Website</a> </div>
+        <div class="score">
+      <a href="https://github.com/Caeden117/ChroMapper#this-is-chromapper" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">About ChroMapper</a> </div>
+    <div class="score">
+      <a href="https://beatsaver.com/profile/4235137" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatSaver Profile</a> </div>
+    <div class="score">
+      <a href="https://www.twitch.tv/caeden117" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View Twitch Profile</a> </div>
+    <div class="score">
+      <a href="https://x.com/The_Caeden117" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View X Profile</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/pzxowGO.png');"></div>
+    <div class="name">Lauriethefish</div>
+    <div class="score">Creator of ModsBeforeFriday</div>
+    <div class="score"><strong>MBF is the website used to mod Beat Saber for standalone users.</strong> </div>
+    <div class="score">
+      <a href="https://github.com/Lauriethefish" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View Github Profile</a> </div>
+    <div class="score">
+      <a href="https://mbf.bsquest.xyz" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">Go to MBF</a> </div>
+    <div class="score">
+      <a href="https://github.com/Lauriethefish/ModsBeforeFriday" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View MBF on Github</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/fSg4gL5.png');"></div>
+    <div class="name">Top-Cat</div>
+    <div class="score">Creator of beatsaver.com</div>
+        <div class="score"><strong>BeatSaver is how all users can find and download custom songs for Beat Saber, even when using BetterSongSearch and other tools.</strong> </div>
+    <div class="score">
+      <a href="https://beatsaver.com" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">Go to BeatSaver</a> </div>
+    <div class="score">
+      <a href="https://github.com/Top-Cat" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">8</div>
+    <div class="score">Custom Saber Artist</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">9</div>
+    <div class="score">Modchart Specialist</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">10</div>
+    <div class="score">VFX Designer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">11</div>
+    <div class="score">Community Manager</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">12</div>
+    <div class="score">Sound Designer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">13</div>
+    <div class="score">Chart Creator</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">14</div>
+    <div class="score">Platform Developer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">15</div>
+    <div class="score">Music Producer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">16</div>
+    <div class="score">Animation Expert</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">17</div>
+    <div class="score">Content Creator</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">18</div>
+    <div class="score">Gameplay Engineer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">19</div>
+    <div class="score">UI Designer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">20</div>
+    <div class="score">Streaming Legend</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">21</div>
+    <div class="score">Community Contributor</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">6</div>
+    <div class="score">Expert Mapper</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">7</div>
+    <div class="score">Rhythm Creator</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">8</div>
+    <div class="score">Custom Saber Artist</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">9</div>
+    <div class="score">Modchart Specialist</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">10</div>
+    <div class="score">VFX Designer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">11</div>
+    <div class="score">Community Manager</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">12</div>
+    <div class="score">Sound Designer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">13</div>
+    <div class="score">Chart Creator</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">14</div>
+    <div class="score">Platform Developer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">15</div>
+    <div class="score">Music Producer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">16</div>
+    <div class="score">Animation Expert</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">17</div>
+    <div class="score">Content Creator</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">18</div>
+    <div class="score">Gameplay Engineer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">19</div>
+    <div class="score">UI Designer</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">20</div>
+    <div class="score">Streaming Legend</div>
+  </div>
+  <div class="card">
+    <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
+    <div class="name">21</div>
+    <div class="score">Community Contributor</div>
+  </div>
+</div>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<footer>
+  © 2026 BSHOF • Not affiliated or endorsed by Beat Saber, fan made.<br>
+    All rights reserved.<br>
+</footer>
+
+<audio id="bgMusic" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById("bgMusic");
+music.volume = 0.3;
+
+let unlocked = false;
+let videoActivated = false;
+
+async function unlockAudio() {
+  if (unlocked) return;
+  unlocked = true;
+  videoActivated = true;
+
+  try {
+    await music.play();
+  } catch (e) {
+    console.log("Blocked:", e);
+  }
+
+  // remove listeners after success
+  window.removeEventListener("click", unlockAudio);
+  window.removeEventListener("keydown", unlockAudio);
+}
+
+window.addEventListener("click", unlockAudio);
+window.addEventListener("keydown", unlockAudio);
+
+function openCredits(event) {
+  event.preventDefault();
+  document.getElementById('creditsModal').classList.add('show');
+}
+
+function closeCredits() {
+  document.getElementById('creditsModal').classList.remove('show');
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', (event) => {
+  const modal = document.getElementById('creditsModal');
+  if (event.target === modal) {
+    closeCredits();
+  }
+});
+
+// Music fade utility functions
+function fadeOutMusic() {
+  return new Promise(resolve => {
+    let currentVolume = music.volume;
+    const fadeSpeed = 0.05;
+    const fadeInterval = setInterval(() => {
+      music.volume = Math.max(0, music.volume - fadeSpeed);
+      if (music.volume <= 0) {
+        clearInterval(fadeInterval);
+        music.pause();
+        resolve();
+      }
+    }, 30);
+  });
+}
+
+function fadeInMusic() {
+  return new Promise(resolve => {
+    music.volume = 0;
+    music.play().catch(err => console.log('Music play failed:', err));
+    const targetVolume = 0.3;
+    const fadeSpeed = 0.05;
+    const fadeInterval = setInterval(() => {
+      music.volume = Math.min(targetVolume, music.volume + fadeSpeed);
+      if (music.volume >= targetVolume) {
+        clearInterval(fadeInterval);
+        resolve();
+      }
+    }, 30);
+  });
+}
+
+// Mark cards with videos and set up video functionality
+document.querySelectorAll('.card-video').forEach(video => {
+  const card = video.parentElement;
+  card.classList.add('has-video');
+  
+  // Create activation popup for this card
+  const popup = document.createElement('div');
+  popup.className = 'video-activation-popup';
+  popup.innerHTML = '<span class="popup-icon">🔑</span><div class="popup-text">Click anywhere on the screen to activate profile videos.</div>';
+  card.appendChild(popup);
+  
+  card.addEventListener('mouseenter', () => {
+    if (!videoActivated) {
+      popup.classList.add('active');
+    } else {
+      fadeOutMusic();
+      video.play().catch(err => console.log('Video play failed:', err));
+    }
+  });
+  
+  card.addEventListener('mouseleave', () => {
+    popup.classList.remove('active');
+    if (videoActivated) {
+      video.pause();
+      video.currentTime = 0;
+      fadeInMusic();
+    }
+  });
+});
+</script>
+</body>
+</html>
