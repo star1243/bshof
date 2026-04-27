@@ -174,6 +174,7 @@ setTimeout(() => {
       font-weight:bold;
       background: linear-gradient(90deg, var(--neon1), var(--neon2));
       -webkit-background-clip:text;
+      background-clip:text;
       -webkit-text-fill-color:transparent;
     }
 
@@ -238,10 +239,10 @@ setTimeout(() => {
 
     .card-video {
       position: absolute;
-      top: 15px;
-      left: 15px;
-      width: calc(100% - 30px);
-      height: 305px;
+      top: 0px;
+      left: 0px;
+      width: calc(116% - 30px);
+      height: 340px;
       border-radius: 15px;
       object-fit: cover;
       object-position: center;
@@ -269,6 +270,11 @@ setTimeout(() => {
       transition: opacity 0.3s ease;
     }
 
+    .card.has-video:hover .link {
+      opacity: 0.7;
+      transition: opacity 0.8s ease;
+    }
+
     .card:has(.card-video):hover .avatar {
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -282,6 +288,11 @@ setTimeout(() => {
     .card:has(.card-video):hover .score {
       opacity: 0;
       transition: opacity 0.3s ease;
+    }
+
+    .card:has(.card-video):hover .link {
+      opacity: 0.7;
+      transition: opacity 0.8s ease;
     }
 /* End of Card Video settings. */
 
@@ -300,6 +311,7 @@ setTimeout(() => {
       padding:2px;
       background: linear-gradient(45deg, var(--neon1), var(--neon2));
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
     }
@@ -329,6 +341,12 @@ setTimeout(() => {
       font-size:0.85rem;
       opacity:0.8;
     }
+
+    .link {
+      font-size:0.85rem;
+      opacity:0.8;
+    }
+
 
     footer {
       margin-top:40px;
@@ -373,7 +391,7 @@ setTimeout(() => {
       width: 90%;
       max-width: 600px;
       max-height: 70vh;
-      overflow-y: hidden;
+      overflow-y: auto;
       box-shadow: 0 40px 80px rgba(42, 141, 255, 0.3);
       animation: slideUp 1s ease;
     }
@@ -493,6 +511,272 @@ setTimeout(() => {
       50% { transform: translate(-50%, -50%) scale(1.05); }
     }
 
+    /* About Popup Styles */
+    #customPopupOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 11000;
+      align-items: center;
+      justify-content: center;
+      animation: overlayFadeIn 0.4s ease;
+    }
+
+    #customPopupOverlay.show {
+      display: flex;
+    }
+
+    .customPopupContent {
+      background: linear-gradient(135deg, rgba(100, 200, 255, 0.2), rgba(255, 100, 200, 0.2), rgba(255, 255, 255, 0.1));
+      backdrop-filter: blur(30px);
+      border: 2px solid;
+      border-image: linear-gradient(135deg, #64C8FF, #FF64C8, #FFFFFF) 1;
+      border-radius: 30px;
+      padding: 60px 50px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 70vh;
+      overflow-y: auto;
+      box-shadow: 0 0 60px rgba(100, 200, 255, 0.4), 0 0 100px rgba(255, 100, 200, 0.3), inset 0 0 60px rgba(255, 255, 255, 0.15);
+      animation: popupSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+    }
+
+    .customPopupContent h2 {
+      margin: 0 0 20px 0;
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #64C8FF, #FF64C8, #FFFFFF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: bold;
+      animation: titleGlow 2s ease-in-out infinite;
+    }
+
+    .customPopupContent p {
+      margin: 15px 0;
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.8;
+      animation: bodyFadeIn 0.8s ease 0.2s backwards;
+    }
+
+    .closeCustomBtn {
+      margin-top: 30px;
+      padding: 12px 40px;
+      background: linear-gradient(135deg, #64C8FF, #FF64C8);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50px;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 20px rgba(100, 200, 255, 0.6), 0 0 30px rgba(255, 100, 200, 0.4);
+      animation: buttonPop 0.8s ease 0.4s backwards;
+    }
+
+    .closeCustomBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(100, 200, 255, 0.8), 0 0 60px rgba(255, 100, 200, 0.6);
+      background: linear-gradient(135deg, #FF64C8, #64C8FF);
+    }
+
+    .closeCustomBtn:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes overlayFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes popupSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes titleGlow {
+      0%, 100% {
+        text-shadow: 0 0 20px rgba(100, 200, 255, 0.5), 0 0 40px rgba(255, 100, 200, 0.3);
+      }
+      50% {
+        text-shadow: 0 0 30px rgba(100, 200, 255, 0.8), 0 0 60px rgba(255, 100, 200, 0.6);
+      }
+    }
+
+    @keyframes bodyFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes buttonPop {
+      from {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Settings Modal Styles */
+    #settingsModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      z-index: 11000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #settingsModal.show {
+      display: flex;
+    }
+
+    .settingsContent {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.3);
+      animation: slideUp 0.5s ease;
+    }
+
+    .settingsHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+      padding-bottom: 15px;
+    }
+
+    .settingsHeader h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: rgba(0, 0, 0, 0.8);
+      font-weight: 600;
+    }
+
+    .settingItem {
+      margin-bottom: 25px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: 0.3s;
+    }
+
+    .settingItem:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .settingLabel {
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.8);
+      font-size: 1rem;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 28px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    input:checked + .slider {
+      background: linear-gradient(135deg, #64C8FF, #FF64C8);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    .closeSettingsBtn {
+      background: none;
+      border: none;
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: 0.3s;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .closeSettingsBtn:hover {
+      color: rgba(0, 0, 0, 0.9);
+      transform: rotate(90deg);
+    }
+
   </style>
 </head>
 <body>
@@ -502,7 +786,9 @@ setTimeout(() => {
   <nav>
     <a href="#">Home</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLScFin6A696pIaD8N0I-3lRIbl8W-SuZ1o16niUZbDZUlMY7xw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" >Submit yourself to BSHOF</a>
+    <a href="#" onclick="openSettings(event)">Settings</a>
     <a href="#" onclick="openCredits(event)">Credits</a>
+  </nav>
 </header>
 
 <!-- Credits Modal -->
@@ -519,6 +805,45 @@ setTimeout(() => {
   </div>
 </div>
 
+<!-- Generic Custom Popup -->
+<div id="customPopupOverlay">
+  <div class="customPopupContent">
+    <h2 id="popupTitle">Heading</h2>
+    <p id="popupBody">Body text goes here.</p>
+    <button class="closeCustomBtn" onclick="closeCustomPopup()">CLOSE</button>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div id="settingsModal">
+  <div class="settingsContent">
+    <div class="settingsHeader">
+      <h2>Settings</h2>
+      <button class="closeSettingsBtn" onclick="closeSettings()">&times;</button>
+    </div>
+
+    <div class="settingItem">
+      <body>By switching these options, you agree that the site will use cookies to store/save your preferences.</body>
+    </div>
+    
+    <div class="settingItem">
+      <span class="settingLabel">Background Music</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="musicToggle" onchange="toggleMusic()">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="settingItem">
+      <span class="settingLabel">Card Videos</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="videosToggle" onchange="toggleVideos()">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+</div>
+
 <h1>BS Hall Of Fame</h1>
 
 <div class="container">
@@ -527,13 +852,13 @@ setTimeout(() => {
     <div class="avatar" style="background-image:url('https://i.postimg.cc/PJhkSs3w/268459727.jpg');"></div>
     <div class="name">Star_Dev</div>
     <div class="score">Site Creator</div>
-    <div class="score">
+    <div class="link">
       <a href="https://www.beatsaver.com/profile/312077" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatSaver Profile</a>
     </div>
-        <div class="score">
+        <div class="link">
       <a href="https://beatleader.com/u/adamsrealm1/" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatLeader Profile</a>
     </div>
-        <div class="score">
+        <div class="link">
       <a href="https://github.com/adamsrealm1" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a>
     </div>
   </div>
@@ -547,20 +872,20 @@ setTimeout(() => {
     <div class="score">Modchart Maker</div>
     <div class="score">Built BSIPA</div>
     <div class="score"><strong>BSIPA is the mod that allows mods to load in.</strong></div>
-    <div class="score">
+    <div class="link">
       <a href="https://beatsaver.com/profile/4284246" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatSaver Profile</a>
     </div>
-        <div class="score">
+        <div class="link">
       <a href="https://beatleader.com/u/76561198271377161/" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatLeader Profile</a>
     </div>
-        <div class="score">
+        <div class="link">
       <a href="https://github.com/Swifter1243" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a>
     </div>
-        <div class="score">
+        <div class="link">
       <a href="https://swifter1243.dev" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View User's Website</a>
     </div>
-        <div class="score">
-      <a href="https://bsaber.com/playlists/extra-sensory-ii" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">About Extra Sensory 2</a>
+        <div class="link">
+      <a href="#" onclick="openCustomPopup(event, 'About Extra Sensory 2', 'Extra Sensory II is a major 2025 Beat Saber community event and custom map pack showcasing advanced modding techniques, primarily utilizing the Vivify mod to create high-tech, immersive visual environments. As a sequel to the 2020 event, it features intense, experimental &quot;modcharts&quot;—levels with moving, complex environments—curated into a competitive, battle royale style live event, often referred to as a sight-read event. - Google Gemini')" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">About Extra Sensory 2</a>
     </div>
   </div>
   <div class="card">
@@ -569,13 +894,13 @@ setTimeout(() => {
     <div class="score">NE Creator</div>
     <div class="score">Synapse Creator</div>
     <div class="score">Vivify Creator</div>
-      <div class="score">
-      <a href="https://github.com/Aeroluna/Synapse#Synapse" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">About Synapse</a> </div>
-        <div class="score">
+      <div class="link">
+      <a href="#" onclick="openCustomPopup(event, 'About Synapse', 'EXSII featured a truly interactive live event, enabled by Synapse, a cutting-edge mod that brings players from around the world together to engage with innovative new maps in real-time. Participants compete against each other on a shared leaderboard and can communicate seamlessly using the in-game chat feature. - Aeroluna')" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">About Synapse</a> </div>
+        <div class="link">
       <a href="https://github.com/Aeroluna" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a> </div>
-        <div class="score">
+        <div class="link">
       <a href="https://aeroluna.dev/" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View User's Website</a> </div>
-    <div class="score">
+    <div class="link">
       <a href="https://beatsaver.com/profile/4284266#" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatSaver Profile</a>
    </div>
   </div>
@@ -585,8 +910,8 @@ setTimeout(() => {
     <div class="score">3D VFX Maker</div>
     <div class="score">Vivify Maker</div>
     <div class="score">Noodle Extensions Pro</div>
-      <div class="score">
-        <a href="#" style="color: var(); text-decoration:none; font-size:0.85rem;">Work in progress.</a>
+      <div class="link">
+        <a href="#" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">Work in progress.</a>
     </div>
   </div>
   <div class="card">
@@ -594,18 +919,18 @@ setTimeout(() => {
     <div class="name">Caeden117</div>
     <div class="score">Creator of ChroMapper</div>
     <div class="score"><strong>Without CM 60% of maps wouldn't be made!</strong></div>
-      <div class="score">
+      <div class="link">
       <a href="https://github.com/caeden117" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a> </div>
-        <div class="score">
+        <div class="link">
       <a href="https://caeden.dev/" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View User's Website</a> </div>
-        <div class="score">
-      <a href="https://github.com/Caeden117/ChroMapper#this-is-chromapper" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">About ChroMapper</a> </div>
-    <div class="score">
+    <div class="link">
       <a href="https://beatsaver.com/profile/4235137" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatSaver Profile</a> </div>
-    <div class="score">
+    <div class="link">
       <a href="https://www.twitch.tv/caeden117" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View Twitch Profile</a> </div>
-    <div class="score">
-      <a href="https://x.com/The_Caeden117" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View X Profile</a>
+    <div class="link">
+      <a href="https://x.com/The_Caeden117" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View X Profile</a> </div>
+      <div class="link">
+      <a href="#" onclick="openCustomPopup(event, 'About ChroMapper', 'ChroMapper is an in-development, Unity-based map editor for Beat Saber, specializing in modded map creation. ChroMapper also offers various tools and features that tailor towards the advanced mappers of the community.')" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">About ChroMapper</a>
     </div>
   </div>
   <div class="card">
@@ -616,11 +941,11 @@ setTimeout(() => {
     <div class="name">Lauriethefish</div>
     <div class="score">Creator of ModsBeforeFriday</div>
     <div class="score"><strong>MBF is the website used to mod Beat Saber for standalone users.</strong> </div>
-    <div class="score">
+    <div class="link">
       <a href="https://github.com/Lauriethefish" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View Github Profile</a> </div>
-    <div class="score">
+    <div class="link">
       <a href="https://mbf.bsquest.xyz" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">Go to MBF</a> </div>
-    <div class="score">
+    <div class="link">
       <a href="https://github.com/Lauriethefish/ModsBeforeFriday" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View MBF on Github</a>
     </div>
   </div>
@@ -629,9 +954,9 @@ setTimeout(() => {
     <div class="name">Top-Cat</div>
     <div class="score">Creator of beatsaver.com</div>
         <div class="score"><strong>BeatSaver is how all users can find and download custom songs for Beat Saber, even when using BetterSongSearch and other tools.</strong> </div>
-    <div class="score">
+    <div class="link">
       <a href="https://beatsaver.com" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">Go to BeatSaver</a> </div>
-    <div class="score">
+    <div class="link">
       <a href="https://github.com/Top-Cat" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a>
     </div>
   </div>
@@ -811,8 +1136,7 @@ setTimeout(() => {
 <br><br>
 <br><br>
 <br><br>
-<br><br>
-<br><br>
+
 <footer>
   © 2026 BSHOF • Not affiliated or endorsed by Beat Saber, fan made.<br>
     All rights reserved.<br>
@@ -824,7 +1148,7 @@ setTimeout(() => {
 
 <script>
 const music = document.getElementById("bgMusic");
-music.volume = 0.3;
+music.volume = 0.1;
 
 let unlocked = false;
 let videoActivated = false;
@@ -859,10 +1183,117 @@ function closeCredits() {
   document.getElementById('creditsModal').classList.remove('show');
 }
 
-// Close modal when clicking outside
+function openCustomPopup(event, title, bodyText) {
+  event.preventDefault();
+  document.getElementById('popupTitle').textContent = title;
+  document.getElementById('popupBody').textContent = bodyText;
+  document.getElementById('customPopupOverlay').classList.add('show');
+}
+
+function closeCustomPopup() {
+  document.getElementById('customPopupOverlay').classList.remove('show');
+}
+
+function openSettings(event) {
+  event.preventDefault();
+  document.getElementById('settingsModal').classList.add('show');
+  loadSettings();
+}
+
+function closeSettings() {
+  document.getElementById('settingsModal').classList.remove('show');
+}
+
+// Cookie management functions
+function setCookie(name, value, days = 365) {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+}
+
+function getCookie(name, defaultValue = true) {
+  const nameEQ = name + "=";
+  const cookies = document.cookie.split(';');
+  for (let cookie of cookies) {
+    cookie = cookie.trim();
+    if (cookie.indexOf(nameEQ) === 0) {
+      return cookie.substring(nameEQ.length) === 'true';
+    }
+  }
+  return defaultValue;
+}
+
+function loadSettings() {
+  const musicEnabled = getCookie('musicEnabled', true);
+  const videosEnabled = getCookie('videosEnabled', true);
+  document.getElementById('musicToggle').checked = musicEnabled;
+  document.getElementById('videosToggle').checked = videosEnabled;
+}
+
+function toggleMusic() {
+  const isChecked = document.getElementById('musicToggle').checked;
+  setCookie('musicEnabled', isChecked);
+  
+  if (isChecked && unlocked) {
+    fadeInMusic();
+  } else {
+    fadeOutMusic();
+  }
+}
+
+function toggleVideos() {
+  const isChecked = document.getElementById('videosToggle').checked;
+  setCookie('videosEnabled', isChecked);
+  
+  if (!isChecked) {
+    // Pause all videos and remove hover effects
+    document.querySelectorAll('.card-video').forEach(video => {
+      video.pause();
+    });
+  }
+  
+  // Toggle visibility of hover effects
+  const style = document.getElementById('videoHoverStyle');
+  if (!isChecked) {
+    if (!style) {
+      const newStyle = document.createElement('style');
+      newStyle.id = 'videoHoverStyle';
+      newStyle.textContent = `
+        .card.has-video:hover .avatar,
+        .card.has-video:hover .name,
+        .card.has-video:hover .score,
+        .card:has(.card-video):hover .avatar,
+        .card:has(.card-video):hover .name,
+        .card:has(.card-video):hover .score {
+          opacity: 1 !important;
+        }
+        .card:hover .card-video {
+          opacity: 0 !important;
+        }
+      `;
+      document.head.appendChild(newStyle);
+    }
+  } else {
+    if (style) {
+      style.remove();
+    }
+  }
+}
+
+// Close popups when clicking outside
 window.addEventListener('click', (event) => {
-  const modal = document.getElementById('creditsModal');
-  if (event.target === modal) {
+  const customModal = document.getElementById('customPopupOverlay');
+  if (event.target === customModal) {
+    closeCustomPopup();
+  }
+  
+  const settingsModal = document.getElementById('settingsModal');
+  if (event.target === settingsModal) {
+    closeSettings();
+  }
+  
+  const creditsModal = document.getElementById('creditsModal');
+  if (event.target === creditsModal) {
     closeCredits();
   }
 });
@@ -903,7 +1334,7 @@ function fadeInMusic() {
 document.querySelectorAll('.card-video').forEach(video => {
   const card = video.parentElement;
   card.classList.add('has-video');
-  video.volume = 0.5; // Set video audio volume to 0.5
+  video.volume = 0.3; // Set video audio volume to 0.3
   
   // Create activation popup for this card
   const popup = document.createElement('div');
