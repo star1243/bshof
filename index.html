@@ -582,6 +582,62 @@ setTimeout(() => {
       }
     }
 
+    /* Mobile feature notice */
+    #mobileNoticeOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 12000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #mobileNoticeOverlay.show {
+      display: flex;
+    }
+
+    .mobileNoticeContent {
+      width: 90%;
+      max-width: 520px;
+      padding: 30px;
+      background: linear-gradient(135deg, rgba(30, 135, 255, 0.35), rgba(5, 103, 232, 0.2));
+      border: 2px solid var(--neon1);
+      border-radius: 20px;
+      box-shadow: 0 30px 70px rgba(42, 141, 255, 0.35);
+      text-align: center;
+    }
+
+    .mobileNoticeContent p {
+      margin: 0;
+      color: white;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .mobileNoticeCloseBtn {
+      margin-top: 25px;
+      padding: 10px 28px;
+      background: linear-gradient(135deg, var(--neon1), var(--neon2));
+      border: 0;
+      border-radius: 50px;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .mobileNoticeCloseBtn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 24px rgba(42, 141, 255, 0.6);
+    }
+
 
 
   </style>
@@ -621,6 +677,14 @@ setTimeout(() => {
     <h2 id="popupTitle">Heading</h2>
     <p id="popupBody">Body text goes here.</p>
     <button class="closeCustomBtn" onclick="closeCustomPopup()">CLOSE</button>
+  </div>
+</div>
+
+<!-- Mobile feature notice markup -->
+<div id="mobileNoticeOverlay">
+  <div class="mobileNoticeContent">
+    <p>Certain features have been disabled due to using a mobile device, we are trying to improve the site to fully support mobile devices, so stay patient please.</p>
+    <button class="mobileNoticeCloseBtn" onclick="closeMobileNotice()">Close</button>
   </div>
 </div>
 
@@ -937,8 +1001,16 @@ setTimeout(() => {
 const music = document.getElementById("bgMusic");
 music.volume = 0.1;
 
+const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+  (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && window.innerWidth <= 1024);
+
 let unlocked = false;
 let videoActivated = false;
+
+if (isMobileDevice) {
+  document.getElementById('mobileNoticeOverlay').classList.add('show');
+  document.querySelectorAll('.card-video').forEach(video => video.remove());
+}
 
 async function unlockAudio() {
   if (unlocked) return;
@@ -980,6 +1052,10 @@ function closeCustomPopup() {
   document.getElementById('customPopupOverlay').classList.remove('show');
 }
 
+function closeMobileNotice() {
+  document.getElementById('mobileNoticeOverlay').classList.remove('show');
+}
+
 
 
 
@@ -994,6 +1070,11 @@ window.addEventListener('click', (event) => {
   const creditsModal = document.getElementById('creditsModal');
   if (event.target === creditsModal) {
     closeCredits();
+  }
+
+  const mobileNotice = document.getElementById('mobileNoticeOverlay');
+  if (event.target === mobileNotice) {
+    closeMobileNotice();
   }
 });
 
@@ -1030,6 +1111,7 @@ function fadeInMusic() {
 }
 
 // Profile card video hover behavior
+if (!isMobileDevice) {
 document.querySelectorAll('.card-video').forEach(video => {
   const card = video.parentElement;
   card.classList.add('has-video');
@@ -1059,6 +1141,7 @@ document.querySelectorAll('.card-video').forEach(video => {
     }
   });
 });
+}
 </script>
 </body>
 </html>
