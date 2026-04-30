@@ -6,61 +6,6 @@
   <title>Beat Saber Hall of Fame</title>
 
 <style>
-  #mobileErrorScreen {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 20px;
-    text-align: center;
-  }
-
-  #mobileErrorScreen.show {
-    display: flex;
-  }
-
-  #mobileErrorScreen h1 {
-    color: #ff0000;
-    font-size: 24px;
-    margin-bottom: 20px;
-    font-family: Arial, sans-serif;
-  }
-
-  #mobileErrorScreen p {
-    color: #0011ff;
-    font-size: 18px;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-  }
-</style>
-
-<div id="mobileErrorScreen">
-  <h1>⚠️ Oops!</h1>
-  <p>The BSHOF is not supported on mobile devices. Sorry for the inconvenience.<br><br><br><br><br><br><br><br><br>© 2026 BSHOF</p>
-</div> 
-
-<script>
-  function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
-  }
-
-  if (isMobileDevice()) {
-    document.getElementById('mobileErrorScreen').classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-</script>
-
-
-
-<style>
 
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -687,7 +632,7 @@ setTimeout(() => {
 <div class="container">
 
   <div class="card">
-    <div class="avatar" style="background-image:url('https://i.postimg.cc/PJhkSs3w/268459727.jpg');"></div>
+    <div class="avatar" style="background-image:url('Images/adamsrealm1.jpg');"></div>
     <div class="name">Star_Dev</div>
     <div class="score">Site Creator</div>
     <div class="link">
@@ -704,7 +649,7 @@ setTimeout(() => {
     <video class="card-video">
       <source src="videos/swifter.mp4" type="video/mp4">
     </video>
-    <div class="avatar" style="background-image:url('https://i.imgur.com/ECf8pN6.png');"></div>
+    <div class="avatar" style="background-image:url('Images/Swifter.png');"></div>
     <div class="name">Swifter</div>
     <div class="score">Extra Sensory 2 Creator</div>
     <div class="score">Modchart Maker</div>
@@ -727,7 +672,7 @@ setTimeout(() => {
     </div>
   </div>
   <div class="card">
-    <div class="avatar" style="background-image:url('https://i.imgur.com/bGTXQ8k.png');"></div>
+    <div class="avatar" style="background-image:url('Images/Aeroluna.png');"></div>
     <div class="name">Aeroluna</div>
     <div class="score">NE Creator</div>
     <div class="score">Synapse Creator</div>
@@ -743,7 +688,7 @@ setTimeout(() => {
    </div>
   </div>
   <div class="card">
-    <div class="avatar" style="background-image:url('https://i.imgur.com/74o9eTd.jpeg');"></div>
+    <div class="avatar" style="background-image:url('Images/ozymandias.jpg');"></div>
     <div class="name">Ozymandias</div>
     <div class="score">3D VFX Artist</div>
     <div class="score">Vivify Artist</div>
@@ -753,7 +698,7 @@ setTimeout(() => {
     </div>
   </div>
   <div class="card">
-    <div class="avatar" style="background-image:url('https://i.imgur.com/CdAxmd7.png');"></div>
+    <div class="avatar" style="background-image:url('Images/Caeden117.png');"></div>
     <div class="name">Caeden117</div>
     <div class="score">Creator of ChroMapper</div>
     <div class="score"><strong>Without CM 60% of maps wouldn't be made!</strong></div>
@@ -775,7 +720,7 @@ setTimeout(() => {
     <video class="card-video">
       <source src="videos/fish.mp4" type="video/mp4">
     </video>
-    <div class="avatar" style="background-image:url('https://i.imgur.com/pzxowGO.png');"></div>
+    <div class="avatar" style="background-image:url('Images/lauriethefish.png');"></div>
     <div class="name">Lauriethefish</div>
     <div class="score">Creator of ModsBeforeFriday</div>
     <div class="score"><strong>MBF is the website used to mod Beat Saber for standalone users.</strong> </div>
@@ -788,7 +733,7 @@ setTimeout(() => {
     </div>
   </div>
   <div class="card">
-    <div class="avatar" style="background-image:url('https://i.imgur.com/fSg4gL5.png');"></div>
+    <div class="avatar" style="background-image:url('Images/topcat.png');"></div>
     <div class="name">Top-Cat</div>
     <div class="score">Creator of beatsaver.com</div>
         <div class="score"><strong>BeatSaver is how all users can find and download custom songs for Beat Saber, even when using BetterSongSearch and other tools.</strong> </div>
@@ -998,7 +943,6 @@ let videoActivated = false;
 
 async function unlockAudio() {
   if (unlocked) return;
-  if (isMobileDevice()) return; // Don't play music on mobile devices
   
   unlocked = true;
   videoActivated = true;
