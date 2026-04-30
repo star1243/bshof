@@ -258,7 +258,7 @@ setTimeout(() => {
 
     .card:hover {
       transform: translateY(-10px) scale(1.05);
-      box-shadow:0 10px 40px rgba(0, 17, 255, 0.7);
+      box-shadow:0 30px 60px rgba(0, 17, 255, 0.7);
       width:200px;
       height:330px;
     }
@@ -996,12 +996,21 @@ setTimeout(() => {
   </div>
   <div class="card">
     <video class="card-video">
-      <source src="videos/fish.mp4" type="video/mp4">
+      <source src="videos/mawntee.mp4" type="video/mp4">
     </video>
     <div class="avatar" style="background-image:url('https://i.imgur.com/IDWvf85.jpeg');"></div>
     <div class="name">Mawntee</div>
     <div class="score">Modchart Artist</div>
-    <div class="score">Collaborator on various modding projects, like <strong>EXS2, 743⁺Aether*✧ ˳ ⁎ ¹¹¹, and more!</strong></div>
+    <div class="score">Collaborator on various modding projects, like <strong>EXS2 and more!</strong></div>
+    <div class="link">
+      <a href="https://beatsaver.com/profile/4285959" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatSaver Profile</a> </div>
+        <div class="link">
+      <a href="https://beatleader.com/u/mawntee" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View BeatLeader Profile</a> </div>
+        <div class="link">
+      <a href="https://github.com/Mawntee" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View GitHub Profile</a> </div>
+    <div class="link">
+      <a href="https://twitter.com/Mawntee" target="_blank" rel="noopener noreferrer" style="color: var(--neon2); text-decoration:none; font-size:0.85rem;">View X Profile</a> </div>
+     </div>
   </div>
   <div class="card">
     <div class="avatar" style="background-image:url('https://i.imgur.com/placeholder.png');"></div>
@@ -1303,12 +1312,13 @@ if (!isMobileDevice) {
   document.querySelectorAll('.card-video').forEach(video => {
   const card = video.parentElement;
   card.classList.add('has-video');
-  video.volume = 0.3;
+  video.loop = true;
+  video.volume = 0.4;
   
   // Each video card gets its own activation prompt.
   const popup = document.createElement('div');
   popup.className = 'video-activation-popup';
-  popup.innerHTML = '<span class="popup-icon">🔑</span><div class="popup-text">Click anywhere on the screen to activate profile videos.</div>';
+  popup.innerHTML = '<span class="popup-icon">🔐</span><div class="popup-text">Click to activate videos.</div>';
   card.appendChild(popup);
   
   card.addEventListener('mouseenter', () => {
