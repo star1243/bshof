@@ -21,52 +21,172 @@
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(120px);
   background: rgba(0,0,0,0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  cursor: pointer;
+  animation: introOverlaySettle 15s ease-in-out forwards;
 }
 
-#introText {
+#introOverlay.introLeaving {
+  animation: none;
+  opacity: 0;
+  backdrop-filter: blur(0);
+  transition: opacity 0.6s ease, backdrop-filter 0.6s ease;
+}
+
+#introText,
+.introStage {
   color: rgb(167, 187, 255);
-  font-size: 6vw;
+  font-size: clamp(2rem, 4vw, 4.5rem);
   font-weight: bold;
+  line-height: 1.1;
   text-align: center;
   opacity: 0;
-  animation: fadeCycle 6s ease-in-out forwards;
+  position: absolute;
+  transform: scale(0.92);
+  width: min(96vw, 1500px);
+  white-space: nowrap;
+  animation: introStageFade 1.75s ease-in-out forwards;
 }
 
-#otherText {
-  color: rgb(255, 255, 255);
-  font-size: 4vw;
-  font-weight: italic;
-  text-align: center;
-  opacity: 0;
-  animation: fadeCycle 6s ease-in-out forwards;
+.introWelcome {
+  animation-delay: 0.3s;
 }
 
-@keyframes fadeCycle {
-  0% { opacity: 0; transform: scale(0.1); }
-  20% { opacity: 1; transform: scale(0.3); }
-  80% { opacity: 1; transform: scale(0.3);}
-  100% { opacity: 0; transform: scale(0.3);}
+.introImages {
+  animation-delay: 2.2s;
+}
+
+.introHeader {
+  animation-delay: 4.1s;
+}
+
+.introFooter {
+  animation-delay: 6s;
+}
+
+.introVideos {
+  animation-delay: 7.9s;
+}
+
+.introAssets {
+  animation-delay: 9.3s;
+}
+
+.introAlmost {
+  animation: introDoneHold 15s ease-in-out forwards;
+}
+
+.introEnterPrompt {
+  color: white;
+  font-size: clamp(1rem, 1.8vw, 1.7rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  top: calc(50% + 5.5rem);
+  animation: introEnterPrompt 15s ease-in-out forwards;
+}
+
+.introEnterPrompt span {
+  animation: letterBounce 0.9s ease-in-out infinite;
+  display: inline-block;
+}
+
+.introEnterPrompt span:nth-child(2) { animation-delay: 0.05s; }
+.introEnterPrompt span:nth-child(3) { animation-delay: 0.1s; }
+.introEnterPrompt span:nth-child(4) { animation-delay: 0.15s; }
+.introEnterPrompt span:nth-child(5) { animation-delay: 0.2s; }
+.introEnterPrompt span:nth-child(6) { animation-delay: 0.25s; }
+.introEnterPrompt span:nth-child(7) { animation-delay: 0.3s; }
+.introEnterPrompt span:nth-child(8) { animation-delay: 0.35s; }
+.introEnterPrompt span:nth-child(9) { animation-delay: 0.4s; }
+.introEnterPrompt span:nth-child(10) { animation-delay: 0.45s; }
+.introEnterPrompt span:nth-child(11) { animation-delay: 0.5s; }
+.introEnterPrompt span:nth-child(12) { animation-delay: 0.55s; }
+.introEnterPrompt span:nth-child(13) { animation-delay: 0.6s; }
+.introEnterPrompt span:nth-child(14) { animation-delay: 0.65s; }
+
+.loadingDots span {
+  animation: loadingDot 0.75s ease-in-out infinite;
+  display: inline-block;
+  margin-left: 0.12em;
+  opacity: 0.2;
+}
+
+.loadingDots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.loadingDots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes introStageFade {
+  0% { opacity: 0; transform: scale(0.94); }
+  22%, 72% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.03); }
+}
+
+@keyframes loadingDot {
+  0%, 100% { opacity: 0.2; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-0.12em); }
+}
+
+@keyframes introDoneHold {
+  0%, 79% { opacity: 0; transform: scale(0.94); }
+  86%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes introEnterPrompt {
+  0%, 88% { opacity: 0; transform: translateY(12px); }
+  94%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes letterBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.18em); }
+}
+
+@keyframes introOverlaySettle {
+  0%, 86% {
+    backdrop-filter: blur(120px);
+    background: rgba(0,0,0,0.6);
+  }
+  100% {
+    backdrop-filter: blur(18px);
+    background: rgba(0,0,0,0.35);
+  }
 }
 </style>
 
 <div id="introOverlay">
-  <div id="introText">Welcome to the Beat Saber Hall Of Fame.</div>
-  <div id="otherText">Click anywhere to play background music.</div>
+  <div id="introText" class="introStage introWelcome">Welcome to the BSHOF.</div>
+  <div class="introStage introImages">Loading Images <span class="loadingDots"><span>.</span><span>.</span><span>.</span></span></div>
+  <div class="introStage introHeader">Loading Header <span class="loadingDots"><span>.</span><span>.</span><span>.</span></span></div>
+  <div class="introStage introFooter">Loading Footer <span class="loadingDots"><span>.</span><span>.</span><span>.</span></span></div>
+  <div class="introStage introVideos">Loading Videos <span class="loadingDots"><span>.</span><span>.</span><span>.</span></span></div>
+  <div class="introStage introAssets">Loading Assets <span class="loadingDots"><span>.</span><span>.</span><span>.</span></span></div>
+  <div class="introStage introAlmost">Done.</div>
+  <div class="introStage introEnterPrompt"><span>C</span><span>l</span><span>i</span><span>c</span><span>k</span><span>&nbsp;</span><span>t</span><span>o</span><span>&nbsp;</span><span>e</span><span>n</span><span>t</span><span>e</span><span>r</span></div>
 </div>
 
 <script>
+const introOverlay = document.getElementById('introOverlay');
+let introReady = false;
+
 setTimeout(() => {
-  const overlay = document.getElementById('introOverlay');
-  overlay.style.transition = 'opacity 0.5s ease';
-  overlay.style.opacity = '0';
-  setTimeout(() => overlay.remove(), 500);
-}, 4000);
+  introReady = true;
+}, 14000);
+
+introOverlay.addEventListener('click', () => {
+  if (!introReady) return;
+
+  introOverlay.classList.add('introLeaving');
+  setTimeout(() => introOverlay.remove(), 600);
+});
 </script>
 
 
@@ -650,14 +770,17 @@ setTimeout(() => {
         padding: 20px;
       }
 
-      #introText {
-        font-size: 12vw;
+      #introText,
+      .introStage {
+        font-size: clamp(1.6rem, 7vw, 3.5rem);
         line-height: 1.15;
+        white-space: normal;
       }
 
-      #otherText {
-        font-size: 7vw;
-        line-height: 1.25;
+      .introEnterPrompt {
+        font-size: clamp(0.8rem, 3.4vw, 1.25rem);
+        top: calc(50% + 4rem);
+        white-space: nowrap;
       }
 
       header {
@@ -1196,7 +1319,7 @@ setTimeout(() => {
 
 <script>
 const music = document.getElementById("bgMusic");
-music.volume = 0.1;
+music.volume = 0.4;
 
 const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
   (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && window.innerWidth <= 1024);
