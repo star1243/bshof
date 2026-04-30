@@ -6,61 +6,6 @@
   <title>Beat Saber Hall of Fame</title>
 
 <style>
-  #mobileErrorScreen {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 20px;
-    text-align: center;
-  }
-
-  #mobileErrorScreen.show {
-    display: flex;
-  }
-
-  #mobileErrorScreen h1 {
-    color: #ff0000;
-    font-size: 24px;
-    margin-bottom: 20px;
-    font-family: Arial, sans-serif;
-  }
-
-  #mobileErrorScreen p {
-    color: #0011ff;
-    font-size: 18px;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-  }
-</style>
-
-<div id="mobileErrorScreen">
-  <h1>⚠️ Oops!</h1>
-  <p>The BSHOF is not supported on mobile devices. Sorry for the inconvenience.<br><br><br><br><br><br><br><br><br>© 2026 BSHOF</p>
-</div> 
-
-<script>
-  function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
-  }
-
-  if (isMobileDevice()) {
-    document.getElementById('mobileErrorScreen').classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-</script>
-
-
-
-<style>
 
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -154,7 +99,7 @@ setTimeout(() => {
       100% { background-position: 0% 50%; }
     }
 
-/* Start of Header settings. */
+/* Header and main navigation */
 
 
     header {
@@ -205,8 +150,6 @@ setTimeout(() => {
       font-size:2.5rem;
     }
 
-/* End of Header settings. */
-
 .container {
     display: flex;
     flex-direction: row;
@@ -220,7 +163,7 @@ setTimeout(() => {
     padding: 0 20px;
     }
 
-/* Start of Card Video settings. */
+/* Hall of Fame card layout and hover video states */
 
     .card {
       width:195px;
@@ -294,10 +237,7 @@ setTimeout(() => {
       opacity: 0.7;
       transition: opacity 0.8s ease;
     }
-/* End of Card Video settings. */
-
-
-    /* Hide placeholder cards 9-21 */
+    /* Hidden placeholder cards reserved for future Hall of Fame entries */
     .card:nth-child(n+9) {
       display: none;
       pointer-events: none;
@@ -363,7 +303,7 @@ setTimeout(() => {
       text-decoration:none;
     }
 
-    /* Credits Modal Styles */
+    /* Credits modal */
     #creditsModal {
       display: none;
       position: fixed;
@@ -467,7 +407,7 @@ setTimeout(() => {
       }
     }
 
-    /* Video Activation Popup */
+    /* Video activation prompt shown before profile videos are unlocked */
     .video-activation-popup {
       position: absolute;
       top: 50%;
@@ -511,7 +451,7 @@ setTimeout(() => {
       50% { transform: translate(-50%, -50%) scale(1.05); }
     }
 
-    /* About Popup Styles */
+    /* Reusable information popup for About links */
     #customPopupOverlay {
       display: none;
       position: fixed;
@@ -657,7 +597,7 @@ setTimeout(() => {
   </nav>
 </header>
 
-<!-- Credits Modal -->
+<!-- Credits modal markup -->
 <div id="creditsModal">
   <div class="creditsContent">
     <div class="creditsHeader">
@@ -665,13 +605,17 @@ setTimeout(() => {
       <button class="closeBtn" onclick="closeCredits()">&times;</button>
     </div>
     <div class="creditItem">
-      <div class="creditName">Star_Dev</div>
-      <div class="creditRole">Site Creator</div>
+      <div class="creditName">Star</div>
+      <div class="creditRole">Site Creator & Developer</div>
+    </div>
+    <div class="creditItem">
+      <div class="creditName">743⁺Aether*✧ ˳ ⁎ ¹¹¹ by Jaron</div>
+      <div class="creditRole">Background Music</div>
     </div>
   </div>
 </div>
 
-<!-- Generic Custom Popup -->
+<!-- Reusable information popup markup -->
 <div id="customPopupOverlay">
   <div class="customPopupContent">
     <h2 id="popupTitle">Heading</h2>
@@ -998,7 +942,6 @@ let videoActivated = false;
 
 async function unlockAudio() {
   if (unlocked) return;
-  if (isMobileDevice()) return; // Don't play music on mobile devices
   
   unlocked = true;
   videoActivated = true;
@@ -1009,7 +952,7 @@ async function unlockAudio() {
     console.log("Blocked:", e);
   }
 
-  // remove listeners after success
+  // Audio only needs to be unlocked once per page load.
   window.removeEventListener("click", unlockAudio);
   window.removeEventListener("keydown", unlockAudio);
 }
@@ -1041,7 +984,7 @@ function closeCustomPopup() {
 
 
 
-// Close popups when clicking outside
+// Modal click-outside handlers
 window.addEventListener('click', (event) => {
   const customModal = document.getElementById('customPopupOverlay');
   if (event.target === customModal) {
@@ -1054,11 +997,11 @@ window.addEventListener('click', (event) => {
   }
 });
 
-// Music fade utility functions
+// Background music fade helpers
 function fadeOutMusic() {
   return new Promise(resolve => {
     let currentVolume = music.volume;
-    const fadeSpeed = 0.05;
+    const fadeSpeed = 0.1;
     const fadeInterval = setInterval(() => {
       music.volume = Math.max(0, music.volume - fadeSpeed);
       if (music.volume <= 0) {
@@ -1074,7 +1017,7 @@ function fadeInMusic() {
   return new Promise(resolve => {
     music.volume = 0;
     music.play().catch(err => console.log('Music play failed:', err));
-    const targetVolume = 0.2;
+    const targetVolume = 0.4;
     const fadeSpeed = 0.05;
     const fadeInterval = setInterval(() => {
       music.volume = Math.min(targetVolume, music.volume + fadeSpeed);
@@ -1086,13 +1029,13 @@ function fadeInMusic() {
   });
 }
 
-// Mark cards with videos and set up video functionality
+// Profile card video hover behavior
 document.querySelectorAll('.card-video').forEach(video => {
   const card = video.parentElement;
   card.classList.add('has-video');
-  video.volume = 0.3; // Set video audio volume to 0.3
+  video.volume = 0.3;
   
-  // Create activation popup for this card
+  // Each video card gets its own activation prompt.
   const popup = document.createElement('div');
   popup.className = 'video-activation-popup';
   popup.innerHTML = '<span class="popup-icon">🔑</span><div class="popup-text">Click anywhere on the screen to activate profile videos.</div>';
