@@ -1,5 +1,5 @@
 # The Beat Saber Hall Of Fame
-(Click to go to site)[https://star1243.github.io/bshof/]
+https://star1243.github.io/bshof/
 Beat Saber Hall Of Fame
 
 # All your favorite Beat Saber community members!
