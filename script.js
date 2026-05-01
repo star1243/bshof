@@ -160,7 +160,7 @@ if (introOverlay) {
     event.preventDefault();
     introRightClicks += 1;
 
-    if (introRightClicks >= 5) {
+    if (introRightClicks >= 2) {
       enterSite();
     }
   });
